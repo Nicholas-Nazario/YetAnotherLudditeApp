@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#eef2ff" />
+    <title>Today · Yet Another Luddite App UI plan</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <!-- SVG symbols are local so this design reference works without a network connection. -->
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.5 12s3.4-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.4 5.5-9.5 5.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z"/></symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></symbol>
+      <symbol id="icon-list" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h9M8 14h9"/></symbol>
+      <symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 6c-2.5-1.7-5.6-2-9-1v14c3.4-1 6.5-.7 9 1 2.5-1.7 5.6-2 9-1V5c-3.4-1-6.5-.7-9 1ZM12 6v14"/></symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.2 15.1 21 16.4l-2 3.4-2.1-.8a8 8 0 0 1-2.3 1.3l-.3 2.2h-4l-.3-2.2a8 8 0 0 1-2.3-1.3l-2.1.8-2-3.4 1.8-1.3a8 8 0 0 1 0-2.6L3.6 11l2-3.4 2.1.8a8 8 0 0 1 2.3-1.3L10.3 5h4l.3 2.2a8 8 0 0 1 2.3 1.3l2.1-.8 2 3.4-1.8 1.3a8 8 0 0 1 0 2.6Z" transform="translate(0 -2) scale(1 .9)"/></symbol>
+      <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5M12 17.5h.01"/></symbol>
+      <symbol id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    </svg>
+
+    <main class="review-layout">
+      <!-- Review controls are outside the app. They expose design states for discussion. -->
+      <aside class="review-panel" aria-labelledby="review-title">
+        <p class="eyebrow">UI / UX plan · Screen 01</p>
+        <h1 id="review-title">Today</h1>
+        <p class="review-intro">A calm daily view of what a rule would restrict, why, and what changes next.</p>
+
+        <div class="review-divider"></div>
+        <h2>Review a state</h2>
+        <p class="review-help">These controls are part of the mockup viewer, not the iOS app.</p>
+        <div class="scenario-list" role="group" aria-label="Today screen scenarios">
+          <button class="scenario-button is-selected" type="button" data-scenario="overlap" aria-pressed="true"><span class="scenario-dot dot-overlap"></span><span>Active overlap</span></button>
+          <button class="scenario-button" type="button" data-scenario="quiet" aria-pressed="false"><span class="scenario-dot dot-quiet"></span><span>Nothing active</span></button>
+          <button class="scenario-button" type="button" data-scenario="paused" aria-pressed="false"><span class="scenario-dot dot-paused"></span><span>One rule paused</span></button>
+          <button class="scenario-button" type="button" data-scenario="unavailable" aria-pressed="false"><span class="scenario-dot dot-unavailable"></span><span>Unable to enforce</span></button>
+          <button class="scenario-button" type="button" data-scenario="no-rules" aria-pressed="false"><span class="scenario-dot dot-empty"></span><span>No rules yet</span></button>
+        </div>
+
+        <div class="review-note">
+          <span class="note-mark">i</span>
+          <p>Phase 0 uses sample apps and simulated restrictions. The unavailable state previews a later device phase.</p>
+        </div>
+        <a class="spec-link" href="README.md">Read the screen specification <svg class="icon icon-small"><use href="#icon-arrow" /></svg></a>
+      </aside>
+
+      <div class="device-stage">
+        <div class="device" aria-label="Interactive iPhone sized mockup of the Today screen">
+          <div class="device-screen">
+            <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="dynamic-island"></span><span class="status-icons">●●● <span class="battery"></span></span></div>
+            <div class="app-scroll">
+              <header class="app-header">
+                <div>
+                  <p class="app-overline" id="today-date">MONDAY, OCTOBER 12</p>
+                  <h2>Today</h2>
+                </div>
+                <button class="icon-button add-button" type="button" id="add-rule-button" aria-label="Add rule"><svg class="icon"><use href="#icon-plus" /></svg></button>
+              </header>
+
+              <div class="simulation-banner" role="note">
+                <span class="banner-icon"><svg class="icon"><use href="#icon-eye" /></svg></span>
+                <p><strong>Simulation</strong><br />No apps or websites are actually blocked.</p>
+              </div>
+
+              <section class="summary-card" id="summary" aria-labelledby="summary-title">
+                <div class="summary-topline"><span class="summary-kicker">YOUR BOUNDARIES</span><span class="summary-status" id="summary-status"></span></div>
+                <h3 id="summary-title"></h3>
+                <p id="summary-description"></p>
+              </section>
+
+              <section class="next-card" id="next-change" aria-labelledby="next-title">
+                <span class="next-icon"><svg class="icon"><use id="next-icon-use" href="#icon-calendar" /></svg></span>
+                <div><p class="next-label" id="next-label">NEXT EXPECTED CHANGE</p><h3 id="next-title"></h3><p id="next-description"></p></div>
+              </section>
+
+              <details class="preview-control" id="preview-control">
+                <summary>
+                  <span class="preview-icon"><svg class="icon"><use href="#icon-clock" /></svg></span>
+                  <span class="preview-copy"><strong>Preview time</strong><small id="preview-time-label"></small></span>
+                  <span class="preview-change">Change</span>
+                </summary>
+                <div class="preview-expanded">
+                  <label for="preview-datetime">See how your rules look at another time</label>
+                  <input id="preview-datetime" type="datetime-local" value="2026-10-12T12:20" />
+                  <button id="reset-preview" type="button">Reset to demo time</button>
+                </div>
+              </details>
+
+              <section class="targets-section" aria-labelledby="targets-title">
+                <div class="section-heading"><h3 id="targets-title">Restricted in preview</h3><span class="section-count" id="target-count">0</span></div>
+                <div id="target-list" class="target-list"></div>
+              </section>
+            </div>
+
+            <nav class="tab-bar" aria-label="Primary navigation">
+              <button class="tab is-current" type="button" aria-current="page"><svg class="icon"><use href="#icon-clock" /></svg><span>Today</span></button>
+              <button class="tab" type="button" data-future-tab="Rules"><svg class="icon"><use href="#icon-list" /></svg><span>Rules</span></button>
+              <button class="tab" type="button" data-future-tab="Guides"><svg class="icon"><use href="#icon-book" /></svg><span>Guides</span></button>
+              <button class="tab" type="button" data-future-tab="Settings"><svg class="icon"><use href="#icon-settings" /></svg><span>Settings</span></button>
+            </nav>
+            <div class="home-indicator" aria-hidden="true"></div>
+            <div class="prototype-toast" id="prototype-toast" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="stage-caption">Interactive HTML reference · iPhone layout · no network dependency</p>
+      </div>
+    </main>
+  </body>
+</html>
