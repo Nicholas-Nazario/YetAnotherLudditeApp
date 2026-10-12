@@ -17,6 +17,7 @@
 ## Changes and pull requests
 
 - Keep pull requests focused on the requested product or engineering change.
+- Start every pull request title with a conventional type in brackets, such as `[feat]`, `[docs]`, `[chore]`, `[fix]`, or `[refactor]`, followed by a concise description.
 - Do not include files under `plan/` or `mockups/` in a pull request unless the user asks for those files. Avoid adding README links to files excluded from the pull request.
 - Update the README when build or run instructions change. When the user asks for build or test verification, use the documented Xcode project, scheme, and Simulator destination.
 - Do not claim device enforcement, platform compatibility, or test coverage that has not been verified.
