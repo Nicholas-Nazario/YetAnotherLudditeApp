@@ -29,4 +29,4 @@ Scenario controls, device frame, status bar, toast, and sample fixtures are revi
 
 Use the scenario controls and interact with the form to inspect schedule selection, overnight summary, website scope preview, target addition/removal, errors, and unsaved-change confirmation. No enforcement or persistence behavior is implemented in this prototype.
 
-Browser validation on 2026-10-12 rendered all four scenarios at 1280, 390, and 320 px without horizontal overflow or JavaScript page errors. Review screenshots are in `screenshots/`; the larger-text example is a browser stress capture, not native Dynamic Type verification.
+Browser validation on 2026-10-12 rendered all four scenarios at 1280, 390, and 320 px without horizontal overflow or JavaScript page errors. Review screenshots are available in [the original mockup PR](https://github.com/Nicholas-Nazario/YetAnotherLudditeApp/pull/8); the larger-text example is a browser stress capture, not native Dynamic Type verification.

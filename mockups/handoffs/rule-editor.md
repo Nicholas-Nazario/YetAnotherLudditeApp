@@ -141,4 +141,4 @@ None. The user has explicitly settled the interaction and edge-case decisions. T
 
 ## Browser Validation
 
-On 2026-10-12, all four scenarios rendered in installed Chrome via Playwright at 1280, 390, and 320 px without page or form horizontal overflow or JavaScript errors. Default, validation-error, and enlarged-text screenshots are included under `mockups/rule-editor/screenshots/`. The enlarged-text capture is a browser stress example, not native Dynamic Type verification. No native build or enforcement check was performed for this mockup PR.
+On 2026-10-12, all four scenarios rendered in installed Chrome via Playwright at 1280, 390, and 320 px without page or form horizontal overflow or JavaScript errors. Default, validation-error, and enlarged-text screenshots are available in [the original mockup PR](https://github.com/Nicholas-Nazario/YetAnotherLudditeApp/pull/8). Review-only screenshots are not stored in the source tree. The enlarged-text capture is a browser stress example, not native Dynamic Type verification. No native build or enforcement check was performed for this mockup PR.
