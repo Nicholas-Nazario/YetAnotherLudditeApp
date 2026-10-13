@@ -1,0 +1,51 @@
+/* Existing Rules tokens; no global token changes. */
+@import url("../rules/styles.css");
+.sheet-nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items:center; gap: 8px; padding: 0 18px 8px; flex:none; }
+.sheet-nav h2 { margin:0; font-size:17px; }
+.sheet-nav button { border:0; background:none; color:var(--blue); min-height:44px; text-align:left; padding:0; }
+.app-scroll { min-height:0; padding-top:8px; }
+.rule-title { margin:0 0 16px; font-size:25px; line-height:1.2; letter-spacing:-.035em; overflow-wrap:anywhere; }
+.simulation-banner { margin-bottom:12px; }
+.intro { font-size:13px; line-height:1.45; color:var(--muted); margin:0 0 22px; }
+.sheet-section { margin:0 0 21px; }
+.sheet-section > h3 { font-size:15px; font-weight:650; margin:0 3px 10px; }
+.duration-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; }
+.duration-options button { min-height:44px; border:1px solid var(--line); border-radius:11px; background:white; color:var(--ink); padding:8px 4px; font-size:13px; }
+.duration-options button[aria-pressed="true"] { background:var(--inactive-wash); border-color:#a7b0c1; font-weight:700; }
+#custom-fields { margin-top:15px; }
+#custom-fields label { display:block; margin-bottom:7px; font-size:14px; font-weight:600; text-align:center; }
+.duration-wheels { display:grid; grid-template-columns:1fr 1fr; gap:14px; background:white; border:1px solid var(--line); border-radius:15px; padding:12px; }
+.duration-wheels > div { min-width:0; }
+.duration-wheels select { width:100%; height:150px; border:0; border-radius:10px; background:var(--canvas); color:var(--ink); font:inherit; text-align:center; padding:0; cursor:ns-resize; }
+.duration-wheels option { padding:5px; font-size:20px; line-height:1.4; }
+.duration-wheels select:focus-visible { outline:3px solid #88a5ff; outline-offset:2px; }
+.duration-wheels select[aria-invalid="true"] { box-shadow:inset 0 0 0 1px #a1465b; }
+.website-effects { margin:0; }
+.website-effects > div { display:grid; gap:4px; padding:9px 0; }
+.website-effects dt { font-size:13px; font-weight:600; overflow-wrap:anywhere; }
+.website-effects dd { margin:0; font-size:12px; line-height:1.45; color:var(--muted); overflow-wrap:anywhere; }
+.helper { font-size:12px; line-height:1.5; color:var(--muted); margin:9px 3px 0; }
+.timing { padding:15px; }
+.timing-label { margin:0 0 5px; color:var(--muted); font-size:12px; }
+.timing-value { margin:0; font-size:17px; line-height:1.4; font-weight:650; }
+.timing .helper { margin-left:0; }
+.effect-card { padding:3px 15px; }
+#effect-summary p { font-size:14px; line-height:1.5; margin:12px 0; }
+#effect-summary strong { font-weight:650; }
+summary { min-height:44px; padding:12px 0; color:var(--blue-deep); cursor:pointer; font-size:13px; font-weight:600; border-top:1px solid var(--line); }
+summary:focus-visible { outline:3px solid #88a5ff; outline-offset:2px; }
+.expanded-label { display:none; } details[open] .expanded-label { display:inline; } details[open] .collapsed-label { display:none; }
+.target-detail { border-top:1px solid var(--line); padding:13px 0; }
+.target-detail h4 { margin:0 0 5px; font-size:14px; overflow-wrap:anywhere; }
+.target-detail p { margin:0; color:var(--muted); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.website-note { margin:0 0 12px; font-size:12px; line-height:1.5; color:var(--muted); }
+.confirm-footer { padding:12px 20px; border-top:1px solid var(--line); background:white; flex:none; }
+#confirm { width:100%; min-height:48px; padding:12px; border:0; border-radius:12px; background:var(--inactive-wash); color:var(--inactive); font-weight:600; font-size:15px; }
+#confirm:hover:enabled { background:#d8dee8; }
+#confirm:disabled { opacity:.5; cursor:default; }
+.field-error { color:#a1465b; font-size:12px; line-height:1.5; margin:9px 0 0; }
+.error-banner { color:#a1465b; background:#fcecf0; border:1px solid #efc8d2; border-radius:13px; padding:12px; font-size:13px; line-height:1.5; margin-bottom:18px; }
+.prototype-toast { bottom:85px; }
+.scenario-button { min-height:44px; }
+[hidden] { display:none !important; }
+@media(max-width:350px) { .duration-options { grid-template-columns:repeat(2,minmax(0,1fr)); } }
