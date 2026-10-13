@@ -8,6 +8,7 @@ These browser mockups are the visual and interaction plan for the iOS app. They 
 | --- | --- | --- |
 | Today | [Interactive prototype](today/index.html) | [Component and state notes](today/README.md) |
 | Rules | [Interactive prototype](rules/index.html) | [Component and state notes](rules/README.md) · [Handoff](handoffs/rules-list.md) |
+| Rule editor | [Interactive prototype](rule-editor/index.html) | [Component and state notes](rule-editor/README.md) · [Handoff](handoffs/rule-editor.md) |
 
 ## Approach for this proof of concept
 
