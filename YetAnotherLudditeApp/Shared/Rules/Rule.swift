@@ -122,23 +122,32 @@ struct Rule: Identifiable, Codable, Equatable {
         self.pauseUntil = pauseUntil
     }
 
-    func validationMessage() -> String? {
+    enum ValidationField: Int, CaseIterable, Hashable {
+        case name, days, times, targets
+    }
+
+    var validationErrors: [ValidationField: String] {
+        var errors: [ValidationField: String] = [:]
         if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return "Give this rule a name."
+            errors[.name] = "Give this rule a name."
         }
         if schedule.weekdays.isEmpty {
-            return "Choose at least one day."
+            errors[.days] = "Choose at least one day."
         }
         if !schedule.start.isValid || !schedule.end.isValid {
-            return "Choose valid start and end times."
-        }
-        if schedule.durationMinutes < 15 {
-            return "A schedule must last at least 15 minutes."
+            errors[.times] = "Choose valid start and end times."
+        } else if schedule.durationMinutes < 15 {
+            errors[.times] = "A schedule must last at least 15 minutes."
         }
         if sampleAppIDs.isEmpty && websites.isEmpty {
-            return "Choose at least one sample app or website."
+            errors[.targets] = "Choose at least one sample app or website."
         }
-        return nil
+        return errors
+    }
+
+    func validationMessage() -> String? {
+        let errors = validationErrors
+        return ValidationField.allCases.compactMap { errors[$0] }.first
     }
 
     func isEffective(at date: Date, calendar: Calendar) -> Bool {

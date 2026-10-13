@@ -17,26 +17,24 @@ struct DomainPattern: Codable, Hashable, Identifiable {
 
     func matches(host candidate: String) -> Bool {
         let normalized = candidate.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: "."))
-        if normalized == host { return true }
+        if normalized == host || normalized == "www.\(host)" { return true }
         return scope == .includingSubdomains && normalized.hasSuffix(".\(host)")
     }
 
-    static func parse(_ input: String, scope requestedScope: DomainScope) throws -> DomainPattern {
-        var value = input.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !value.isEmpty else { throw DomainInputError.empty }
+    private static func baseHost(_ host: String) -> String {
+        host.hasPrefix("www.") ? String(host.dropFirst(4)) : host
+    }
 
-        var scope = requestedScope
-        if value.hasPrefix("*.") {
-            value.removeFirst(2)
-            scope = .includingSubdomains
-        }
+    static func parse(_ input: String, scope requestedScope: DomainScope) throws -> DomainPattern {
+        let value = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !value.isEmpty else { throw DomainInputError.empty }
 
         let urlText = value.contains("://") ? value : "https://\(value)"
         guard let parts = URLComponents(string: urlText),
               parts.user == nil, parts.password == nil,
               let rawHost = parts.host else { throw DomainInputError.invalid }
 
-        let host = rawHost.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: "."))
+        let host = baseHost(rawHost.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: ".")))
         let labels = host.split(separator: ".", omittingEmptySubsequences: false)
         guard labels.count >= 2,
               host.utf8.count <= 253,
@@ -48,7 +46,7 @@ struct DomainPattern: Codable, Hashable, Identifiable {
                       })
               }) else { throw DomainInputError.invalid }
 
-        return DomainPattern(host: host, scope: scope)
+        return DomainPattern(host: host, scope: requestedScope)
     }
 }
 
