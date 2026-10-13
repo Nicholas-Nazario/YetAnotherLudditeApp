@@ -6,22 +6,23 @@ final class AppModel: ObservableObject {
     @Published private(set) var rules: [Rule] = []
     @Published private(set) var snapshot: RuleSnapshot?
     @Published private(set) var storageReady = true
-    @Published var previewDate: Date? {
-        didSet { refreshSnapshot() }
-    }
     @Published var errorMessage: String?
 
     private let repository: RuleRepository
     private let restrictionService: RestrictionService
-    private let evaluator = RuleEvaluator()
-    private var wallClockDate = Date()
+    private var evaluator: RuleEvaluator { RuleEvaluator(calendar: .current) }
+    private let clock: () -> Date
+    private var wallClockDate: Date
 
-    var currentDate: Date { previewDate ?? wallClockDate }
+    var currentDate: Date { wallClockDate }
 
     init(
         repository: RuleRepository = JSONRuleRepository.appContainer(),
-        restrictionService: RestrictionService = SimulatedRestrictionService()
+        restrictionService: RestrictionService = SimulatedRestrictionService(),
+        clock: @escaping () -> Date = Date.init
     ) {
+        self.clock = clock
+        self.wallClockDate = clock()
         self.repository = repository
         self.restrictionService = restrictionService
         do {
@@ -34,8 +35,8 @@ final class AppModel: ObservableObject {
     }
 
     func refreshClock() {
-        wallClockDate = Date()
-        if previewDate == nil { refreshSnapshot() }
+        wallClockDate = clock()
+        refreshSnapshot()
     }
 
     func save(_ rule: Rule) -> Bool {
@@ -70,7 +71,7 @@ final class AppModel: ObservableObject {
             return false
         }
         var updated = rule
-        updated.pauseUntil = currentDate.addingTimeInterval(TimeInterval(minutes * 60))
+        updated.pauseUntil = clock().addingTimeInterval(TimeInterval(minutes * 60))
         return save(updated)
     }
 
@@ -85,7 +86,7 @@ final class AppModel: ObservableObject {
             try repository.deleteAll()
             rules = []
             storageReady = true
-            refreshSnapshot()
+            refreshClock()
         } catch {
             errorMessage = "Could not remove local rules: \(error.localizedDescription)"
         }
@@ -115,7 +116,7 @@ final class AppModel: ObservableObject {
         do {
             try repository.save(updated)
             rules = updated
-            refreshSnapshot()
+            refreshClock()
             return true
         } catch {
             errorMessage = "Could not save local rules: \(error.localizedDescription)"

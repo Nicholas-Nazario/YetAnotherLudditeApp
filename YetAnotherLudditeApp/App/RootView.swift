@@ -1,8 +1,8 @@
 import SwiftUI
-import Combine
 
 struct RootView: View {
     @EnvironmentObject private var model: AppModel
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         TabView {
@@ -20,6 +20,21 @@ struct RootView: View {
                 SettingsView()
             }
             .tabItem { Label("Settings", systemImage: "gearshape") }
+        }
+        .onChange(of: scenePhase) { phase in
+            if phase == .active { model.refreshClock() }
+        }
+        .task(id: model.rules.map(\.pauseUntil) + [model.snapshot?.nextRuleChange]) {
+            while !Task.isCancelled {
+                model.refreshClock()
+                let now = model.currentDate
+                let nextMinute = Date(timeIntervalSince1970: (floor(now.timeIntervalSince1970 / 60) + 1) * 60)
+                let nextPause = model.rules.compactMap(\.pauseUntil).filter { $0 > now }.min()
+                let wake = min(nextMinute, model.snapshot?.nextRuleChange ?? nextMinute, nextPause ?? nextMinute)
+                do {
+                    try await Task.sleep(nanoseconds: UInt64(max(0.01, wake.timeIntervalSinceNow) * 1_000_000_000))
+                } catch { return }
+            }
         }
         .alert("Local rules", isPresented: Binding(
             get: { model.errorMessage != nil },
@@ -45,7 +60,7 @@ struct WhyBlockedAppView: View {
             Section("Responsible rules") {
                 let matching = model.blockingRules(forSampleApp: appID)
                 if matching.isEmpty {
-                    Text("No active rule blocks this sample app at the preview time.")
+                    Text("No active rule blocks this sample app right now.")
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(matching) { rule in
@@ -90,7 +105,7 @@ struct WebsiteLookupView: View {
                 Section("Rules matching \(inspectedHost)") {
                     let matching = model.blockingRules(forHost: inspectedHost)
                     if matching.isEmpty {
-                        Text("No active rule blocks this host at the preview time.")
+                        Text("No active rule blocks this host right now.")
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(matching) { rule in

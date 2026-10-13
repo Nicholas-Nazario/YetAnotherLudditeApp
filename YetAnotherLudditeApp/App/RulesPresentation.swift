@@ -1,6 +1,6 @@
 import Foundation
 
-/// List status is evaluated with an explicit live date, independently of Today's preview.
+/// List status is evaluated with an explicit live date, using the current device time.
 enum RulesListState: String, CaseIterable, Identifiable {
     case active = "Active"
     case paused = "Paused"
@@ -76,7 +76,7 @@ struct RulesRowPresentation {
         formatter.calendar = calendar
         formatter.timeZone = calendar.timeZone
         formatter.timeStyle = .short
-        // A fixed date keeps schedule formatting independent of the date being previewed.
+        // A fixed date keeps schedule formatting independent of the evaluation date.
         let components = DateComponents(year: 2000, month: 1, day: 1, hour: clock.hour, minute: clock.minute)
         guard let value = calendar.date(from: components) else { return "" }
         return formatter.string(from: value)

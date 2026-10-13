@@ -1,5 +1,4 @@
 import SwiftUI
-import Combine
 
 private extension TodayTone {
     var core: Color {
@@ -68,16 +67,7 @@ struct SimulationBanner: View {
 
 struct TodayView: View {
     @EnvironmentObject private var model: AppModel
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showingEditor = false
-    @State private var previewExpanded = false
-
-    private var previewTime: Binding<Date> {
-        Binding(
-            get: { model.previewDate ?? model.currentDate },
-            set: { model.previewDate = $0 }
-        )
-    }
 
     var body: some View {
         ScrollView {
@@ -85,19 +75,13 @@ struct TodayView: View {
                 let state = TodayPresentation(rules: model.rules, snapshot: snapshot, at: model.currentDate)
                 VStack(alignment: .leading, spacing: 0) {
                     header
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 21)
                     SimulationBanner()
                         .padding(.bottom, 16)
                     TodaySummaryCard(state: state)
                         .padding(.bottom, 15)
                     TodayNextCard(state: state)
-                        .padding(.bottom, 15)
-                    #if targetEnvironment(simulator)
-                    previewCard
                         .padding(.bottom, 25)
-                    #else
-                    Spacer(minLength: 10)
-                    #endif
                     targetsSection(state: state)
                 }
                 .padding(.horizontal, 20)
@@ -112,10 +96,6 @@ struct TodayView: View {
         .sheet(isPresented: $showingEditor) {
             NavigationStack { RuleEditorView(existingRule: nil) }
                 .environmentObject(model)
-        }
-        .onAppear { model.refreshClock() }
-        .onReceive(Timer.publish(every: 30, on: .main, in: .common).autoconnect()) { _ in
-            model.refreshClock()
         }
     }
 
@@ -134,7 +114,7 @@ struct TodayView: View {
             Spacer(minLength: 8)
             Button { showingEditor = true } label: {
                 Image(systemName: "plus")
-                    .font(.title3.weight(.semibold))
+                    .font(.system(size: 20, weight: .semibold))
                     .foregroundStyle(Color("TodayBlueOnFill"))
                     .frame(width: 44, height: 44)
                     .background(Color("TodayBlue"), in: RoundedRectangle(cornerRadius: 15))
@@ -144,80 +124,10 @@ struct TodayView: View {
         }
     }
 
-    #if targetEnvironment(simulator)
-    private var previewCard: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Button { previewExpanded.toggle() } label: {
-                if dynamicTypeSize.isAccessibilitySize {
-                    VStack(alignment: .leading, spacing: 9) {
-                        previewHeader
-                        Text(previewExpanded ? "Done" : "Change")
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(Color("TodayBlue"))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-                } else {
-                    HStack(spacing: 11) {
-                        previewHeader
-                        Spacer(minLength: 8)
-                        Text(previewExpanded ? "Done" : "Change")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(Color("TodayBlue"))
-                    }
-                    .contentShape(Rectangle())
-                }
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("\(model.previewDate == nil ? "Current time" : "Previewing another time"), \(model.currentDate.formatted(date: .abbreviated, time: .shortened)). \(previewExpanded ? "Close" : "Change") preview time")
-
-            if previewExpanded {
-                Divider().overlay(Color("TodayLine")).padding(.vertical, 13)
-                DatePicker("See rules at another time", selection: previewTime, displayedComponents: [.date, .hourAndMinute])
-                    .datePickerStyle(.compact)
-                    .tint(Color("TodayBlue"))
-                if model.previewDate != nil {
-                    Button("Reset to now") {
-                        model.previewDate = nil
-                        previewExpanded = false
-                    }
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color("TodayBlue"))
-                    .padding(.top, 12)
-                    .accessibilityHint("Returns all rule previews to the current device time")
-                }
-            }
-        }
-        .padding(14)
-        .background(Color("TodayCard"), in: RoundedRectangle(cornerRadius: 18))
-        .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color("TodayLine"), lineWidth: 1))
-    }
-
-    private var previewHeader: some View {
-        HStack(spacing: 11) {
-            Image(systemName: "clock")
-                .font(.body.weight(.semibold))
-                .foregroundStyle(Color("TodayBlue"))
-                .frame(width: 35, height: 35)
-                .background(Color("TodaySimulationBackground"), in: RoundedRectangle(cornerRadius: 11))
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Preview time")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color("TodayInk"))
-                Text("\(model.previewDate == nil ? "Now" : "Previewing") · \(model.currentDate.formatted(date: .abbreviated, time: .shortened))")
-                    .font(.caption)
-                    .foregroundStyle(Color("TodaySecondary"))
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-    }
-    #endif
-
     private func targetsSection(state: TodayPresentation) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9) {
-                Text("Restricted in preview")
+                Text("Restricted now")
                     .font(.title3.weight(.semibold))
                     .tracking(-0.4)
                     .foregroundStyle(Color("TodayInk"))
@@ -243,22 +153,22 @@ struct TodayView: View {
 }
 
 private struct TodaySummaryCard: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let state: TodayPresentation
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .top, spacing: 8) {
-                Text("YOUR BOUNDARIES")
-                    .font(.caption2.weight(.heavy))
-                    .tracking(1.2)
-                    .lineLimit(2)
-                Spacer(minLength: 8)
-                Text(state.statusLabel)
-                    .font(.caption2.weight(.bold))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(state.tone.support.opacity(0.88), in: Capsule())
-                    .overlay(Capsule().stroke(state.tone.core.opacity(0.2), lineWidth: 1))
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 8) {
+                    summaryOverline
+                    statusBadge
+                }
+            } else {
+                HStack(alignment: .top, spacing: 8) {
+                    summaryOverline
+                    Spacer(minLength: 8)
+                    statusBadge
+                }
             }
             Text(state.title)
                 .font(.title.bold())
@@ -279,8 +189,26 @@ private struct TodaySummaryCard: View {
         )
         .shadow(color: state.tone.core.opacity(0.12), radius: 13, y: 8)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(state.statusLabel) preview. \(state.title). \(state.detail)")
+        .accessibilityLabel("\(state.statusLabel) in simulation. \(state.title). \(state.detail)")
     }
+
+    private var summaryOverline: some View {
+        Text("YOUR BOUNDARIES")
+            .font(.caption2.weight(.heavy))
+            .tracking(1.2)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var statusBadge: some View {
+        Text(state.statusLabel)
+            .font(.caption2.weight(.bold))
+            .fixedSize(horizontal: true, vertical: true)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(state.tone.support.opacity(0.88), in: Capsule())
+            .overlay(Capsule().stroke(state.tone.core.opacity(0.2), lineWidth: 1))
+    }
+
 }
 
 private struct TodayNextCard: View {
@@ -289,7 +217,7 @@ private struct TodayNextCard: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "calendar")
-                .font(.body.weight(.medium))
+                .font(.system(size: 17, weight: .medium))
                 .frame(width: 22, height: 22)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 4) {
@@ -310,7 +238,7 @@ private struct TodayNextCard: View {
         }
         .foregroundStyle(state.tone.core)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(17)
+        .padding(16)
         .background(state.tone.support, in: RoundedRectangle(cornerRadius: 18))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(state.nextLabel). \(state.nextTitle). \(state.nextDetail)")
@@ -328,10 +256,10 @@ private struct TodayTargetCard: View {
                     switch target.kind {
                     case .sampleApp:
                         Text(String(target.name.last ?? "A"))
-                            .font(.title3.weight(.bold))
+                            .font(.system(size: 20, weight: .bold))
                     case .website:
                         Image(systemName: "globe")
-                            .font(.title3.weight(.medium))
+                            .font(.system(size: 20, weight: .medium))
                     }
                 }
                 .foregroundStyle(Color("TodayActiveDeep"))
@@ -410,7 +338,7 @@ private struct TodayTargetCard: View {
             }
             .font(.caption.weight(.semibold))
             .foregroundStyle(Color("TodayBlue"))
-            .padding(.vertical, 8)
+            .frame(minWidth: 44, minHeight: 44, alignment: .leading)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(target.actionTitle): \(target.name)")
@@ -425,7 +353,7 @@ private struct TodayEmptyCard: View {
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: hasRules ? "clock" : "plus")
-                .font(.title3.weight(.medium))
+                .font(.system(size: 20, weight: .medium))
                 .foregroundStyle(Color("TodayInactiveCore"))
                 .frame(width: 42, height: 42)
                 .background(Color("TodayInactiveSupport"), in: RoundedRectangle(cornerRadius: 14))
@@ -444,6 +372,7 @@ private struct TodayEmptyCard: View {
                 Button("Create rule", action: createRule)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color("TodayBlue"))
+                    .frame(minWidth: 44, minHeight: 44)
                     .padding(.top, 3)
             }
         }
