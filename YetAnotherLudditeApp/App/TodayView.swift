@@ -42,7 +42,7 @@ struct SimulationBanner: View {
     var body: some View {
         HStack(alignment: .center, spacing: 11) {
             Image(systemName: "eye")
-                .font(.body.weight(.semibold))
+                .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color("TodaySimulationText"))
                 .frame(width: 34, height: 34)
                 .background(Color("TodaySimulationIcon"), in: RoundedRectangle(cornerRadius: 11))
