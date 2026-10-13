@@ -34,8 +34,17 @@ struct PauseRuleView: View {
                 TextField("Minutes (15–1440)", text: $minutesText)
                     .keyboardType(.numberPad)
                 if let minutes {
-                    LabeledContent("Expected return", value: model.currentDate.addingTimeInterval(TimeInterval(minutes * 60))
+                    LabeledContent("Pause expires", value: model.currentDate.addingTimeInterval(TimeInterval(minutes * 60))
                         .formatted(date: .abbreviated, time: .shortened))
+                    Text(RuleDetailPresentation(
+                        rule: Rule(id: rule.id, name: rule.name, isEnabled: rule.isEnabled,
+                                   schedule: rule.schedule, sampleAppIDs: rule.sampleAppIDs,
+                                   websites: rule.websites,
+                                   pauseUntil: model.currentDate.addingTimeInterval(TimeInterval(minutes * 60))),
+                        date: model.currentDate, calendar: .current
+                    ).nextChange)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                 } else {
                     Text("Choose 15 minutes through 24 hours.")
                         .font(.footnote)
