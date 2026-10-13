@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f8fd" />
+    <title>Rule Editor · Yet Another Luddite App UI plan</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.5 12s3.4-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.4 5.5-9.5 5.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+      <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+      <symbol id="icon-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    </svg>
+
+    <main class="review-layout">
+      <aside class="review-panel" aria-labelledby="review-title">
+        <p class="eyebrow">UI / UX plan · Screen 03</p>
+        <h1 id="review-title">Rule editor</h1>
+        <p class="review-intro">A single, focused form for naming a rule, choosing when it applies, and selecting its targets.</p>
+
+        <div class="review-divider"></div>
+        <h2>Review a state</h2>
+        <p class="review-help">Switch between form scenarios. These controls are for review; the form is illustrative.</p>
+        <div class="scenario-list" role="group" aria-label="Rule editor scenarios">
+          <button class="scenario-button is-selected" type="button" data-scenario="new" aria-pressed="true"><span class="scenario-dot dot-new"></span><span>New rule</span></button>
+          <button class="scenario-button" type="button" data-scenario="editing" aria-pressed="false"><span class="scenario-dot dot-editing"></span><span>Editing a rule</span></button>
+          <button class="scenario-button" type="button" data-scenario="errors" aria-pressed="false"><span class="scenario-dot dot-error"></span><span>Validation errors</span></button>
+          <button class="scenario-button" type="button" data-scenario="unsaved" aria-pressed="false"><span class="scenario-dot dot-unsaved"></span><span>Unsaved changes</span></button>
+        </div>
+
+        <div class="review-note">
+          <span class="note-mark" aria-hidden="true">i</span>
+          <p>Phase 0 uses sample app identities. App and website selections are simulations; nothing is actually blocked.</p>
+        </div>
+        <a class="spec-link" href="../handoffs/rule-editor.md">Read implementation handoff <span aria-hidden="true">↗</span></a>
+      </aside>
+
+      <section class="device-stage" aria-label="Rule editor screen preview">
+        <div class="device">
+          <div class="device-screen">
+            <div class="status-bar" aria-hidden="true">
+              <span>9:41</span><span class="dynamic-island"></span>
+              <span class="status-icons">●●● <span class="battery"></span></span>
+            </div>
+
+            <header class="nav-bar">
+              <button class="nav-action cancel-action" id="cancel-button" type="button">Cancel</button>
+              <h2 id="screen-title">New Rule</h2>
+              <button class="nav-action save-action" id="save-button" type="button">Save</button>
+            </header>
+
+            <div class="app-scroll" id="app-scroll">
+              <aside class="simulation-banner" aria-label="Simulation. No apps or websites are actually blocked.">
+                <span class="banner-icon" aria-hidden="true"><svg class="icon"><use href="#icon-eye" /></svg></span>
+                <p><strong>Simulation</strong><br />No apps or websites are actually blocked.</p>
+              </aside>
+
+              <form id="rule-form" novalidate>
+                <section class="form-section" aria-labelledby="name-heading" data-section="name">
+                  <h3 id="name-heading" class="section-title">Name</h3>
+                  <div class="form-group name-group">
+                    <label class="sr-only" for="rule-name">Rule name</label>
+                    <input id="rule-name" name="name" type="text" placeholder="Give this rule a name" autocomplete="off" />
+                    <div class="form-divider"></div>
+                    <label class="toggle-row" for="enabled-toggle">
+                      <span>Enabled</span>
+                      <span class="toggle-control"><input id="enabled-toggle" name="enabled" type="checkbox" checked /><span class="toggle-track"></span></span>
+                    </label>
+                  </div>
+                  <p class="field-error" id="name-error" hidden></p>
+                </section>
+
+                <section class="form-section" aria-labelledby="schedule-heading" data-section="schedule">
+                  <h3 id="schedule-heading" class="section-title">Schedule</h3>
+                  <div class="form-group schedule-group">
+                    <div class="weekday-picker" role="group" aria-label="Days of the week">
+                      <button type="button" class="day-button" data-day="Mon" aria-label="Monday" aria-pressed="false">M</button>
+                      <button type="button" class="day-button" data-day="Tue" aria-label="Tuesday" aria-pressed="false">T</button>
+                      <button type="button" class="day-button" data-day="Wed" aria-label="Wednesday" aria-pressed="false">W</button>
+                      <button type="button" class="day-button" data-day="Thu" aria-label="Thursday" aria-pressed="false">T</button>
+                      <button type="button" class="day-button" data-day="Fri" aria-label="Friday" aria-pressed="false">F</button>
+                      <button type="button" class="day-button" data-day="Sat" aria-label="Saturday" aria-pressed="false">S</button>
+                      <button type="button" class="day-button" data-day="Sun" aria-label="Sunday" aria-pressed="false">S</button>
+                    </div>
+                    <p class="field-hint day-hint" id="schedule-summary">Choose at least one day</p>
+                    <div class="schedule-row">
+                      <label for="start-time">Starts</label>
+                      <input id="start-time" type="time" value="09:00" aria-label="Start time" />
+                    </div>
+                    <div class="form-divider"></div>
+                    <div class="schedule-row">
+                      <label for="end-time">Ends</label>
+                      <input id="end-time" type="time" value="17:00" aria-label="End time" />
+                    </div>
+                    <p class="field-hint schedule-note">Overnight schedules belong to the day they start. Minimum duration: 15 minutes.</p>
+                  </div>
+                  <p class="field-error" id="schedule-error" hidden></p>
+                </section>
+
+                <section class="form-section" aria-labelledby="targets-heading" data-section="targets">
+                  <h3 id="targets-heading" class="section-title">Targets</h3>
+                  <div class="target-subsection">
+                    <div class="subsection-heading"><h4>Apps</h4><span class="subsection-caption">Choose any that apply</span></div>
+                    <p class="field-hint target-note">Available apps are Simulator examples, not apps installed on your phone.</p>
+                    <div class="form-group target-list" id="app-list">
+                      <label class="target-row"><span class="sample-app-icon icon-video">▶</span><span class="target-name">Sample App A</span><span class="check-control"><input type="checkbox" name="app" value="demo.app.a" /><span><svg class="icon"><use href="#icon-check" /></svg></span></span></label>
+                      <div class="form-divider"></div>
+                      <label class="target-row"><span class="sample-app-icon icon-chat">•••</span><span class="target-name">Sample App B</span><span class="check-control"><input type="checkbox" name="app" value="demo.app.b" /><span><svg class="icon"><use href="#icon-check" /></svg></span></span></label>
+                      <div class="form-divider"></div>
+                      <label class="target-row"><span class="sample-app-icon icon-game">✦</span><span class="target-name">Sample App C</span><span class="check-control"><input type="checkbox" name="app" value="demo.app.c" /><span><svg class="icon"><use href="#icon-check" /></svg></span></span></label>
+                    </div>
+                  </div>
+
+                  <div class="target-subsection websites-subsection">
+                    <div class="subsection-heading"><h4>Websites</h4><span class="subsection-caption" id="website-count">0 added</span></div>
+                    <div class="form-group website-composer" id="website-composer">
+                      <label class="sr-only" for="website-input">Website address</label>
+                      <input id="website-input" type="text" inputmode="url" placeholder="www.youtube.com" autocapitalize="none" autocomplete="off" spellcheck="false" />
+                      <div class="form-divider"></div>
+                      <fieldset class="match-control">
+                        <legend>Match</legend>
+                        <div class="match-options" role="group" aria-label="Website matching">
+                          <button type="button" class="match-option is-selected" data-match="host" aria-pressed="true">This website</button>
+                          <button type="button" class="match-option" data-match="subdomains" aria-pressed="false">All subdomains</button>
+                        </div>
+                        <p class="field-hint match-preview" id="match-preview">Includes the website and its www version. Other subdomains are not included.</p>
+                      </fieldset>
+                      <p class="field-error website-error" id="website-error" hidden></p>
+                      <button class="add-website-button" id="add-website" type="button">Add website</button>
+                    </div>
+                    <div class="form-group website-list" id="website-list" hidden></div>
+                    <p class="phase-note">Website entries are previews only. Safari and Private Browsing are not restricted in Phase 0.</p>
+                  </div>
+                  <p class="field-error targets-error" id="targets-error" hidden></p>
+                </section>
+              </form>
+            </div>
+
+            <div class="home-indicator" aria-hidden="true"></div>
+            <div class="prototype-toast" id="prototype-toast" role="status" aria-live="polite"></div>
+
+            <div class="dialog-backdrop" id="discard-dialog" hidden>
+              <section class="discard-dialog" role="alertdialog" aria-modal="true" aria-labelledby="discard-title" aria-describedby="discard-copy">
+                <h3 id="discard-title">Discard changes?</h3>
+                <p id="discard-copy">Your unsaved changes will be lost.</p>
+                <button type="button" class="dialog-stay" id="stay-button">Keep Editing</button>
+                <button type="button" class="dialog-discard" id="discard-button">Discard Changes</button>
+              </section>
+            </div>
+          </div>
+        </div>
+        <p class="stage-caption">Device frame and status bar are review aids only</p>
+      </section>
+    </main>
+  </body>
+</html>
