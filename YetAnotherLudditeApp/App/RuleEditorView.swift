@@ -57,10 +57,7 @@ struct RuleEditorView: View {
                     }
                     section("Schedule") {
                         card {
-                            ViewThatFits(in: .horizontal) {
-                                weekdayControls
-                                ScrollView(.horizontal, showsIndicators: true) { weekdayControls }
-                            }
+                            weekdayPicker
                             .id(Field.days)
                             helper(draft.schedule.weekdays.isEmpty ? "Choose at least one day" : draft.schedule.summary)
                             errorLabel(errors[.days])
@@ -188,8 +185,22 @@ struct RuleEditorView: View {
         message: { Text(saveError ?? "") }
     }
 
-    private var weekdayControls: some View {
-        HStack(spacing: textSize.isAccessibilitySize ? 10 : 2) {
+    @ViewBuilder private var weekdayPicker: some View {
+        if textSize.isAccessibilitySize {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 8)], spacing: 12) {
+                weekdayButtons
+            }
+        } else {
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 2) { weekdayButtons }
+                ScrollView(.horizontal, showsIndicators: true) {
+                    HStack(spacing: 2) { weekdayButtons }
+                }
+            }
+        }
+    }
+
+    private var weekdayButtons: some View {
             ForEach(Weekday.displayOrder) { day in
                 let selected = draft.schedule.weekdays.contains(day)
                 Button {
@@ -198,7 +209,7 @@ struct RuleEditorView: View {
                 } label: {
                     Text(String(day.shortName.prefix(1)))
                         .font(.caption.weight(.bold))
-                        .frame(width: dayDiameter, height: dayDiameter)
+                        .frame(width: min(dayDiameter, 72), height: min(dayDiameter, 72))
                         .foregroundStyle(selected ? Color(uiColor: .systemBackground) : Color("TodaySecondary"))
                         .background(selected ? Color("TodayBlue") : Color("TodayCard"), in: Circle())
                         .overlay(Circle().stroke(selected ? Color("TodayBlue") : Color("TodayLine"), lineWidth: 1))
@@ -219,7 +230,6 @@ struct RuleEditorView: View {
                 .accessibilityValue(selected ? "Selected" : "Not selected")
                 .accessibilityAddTraits(selected ? [.isSelected] : [])
             }
-        }
     }
 
     private func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
