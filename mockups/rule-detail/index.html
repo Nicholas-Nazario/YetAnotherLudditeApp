@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rule detail · UX reference</title>
+  <link rel="stylesheet" href="styles.css"><script src="app.js" defer></script>
+</head>
+<body>
+<main class="review-layout">
+  <aside class="review-panel">
+    <p class="eyebrow">UI / UX PLAN · RULE MANAGEMENT</p>
+    <h1>Rule detail</h1>
+    <p class="review-intro">Understand one boundary, see its next change, and choose a temporary pause or a lasting change.</p>
+    <div class="review-divider"></div>
+    <h2>Review a state</h2>
+    <p class="review-help">Fixed developer fixtures. These controls and times are not part of the app.</p>
+    <div class="scenario-list" role="group" aria-label="Rule detail scenarios">
+      <button class="scenario-button" data-scenario="active" aria-pressed="false">Active with overlaps</button>
+      <button class="scenario-button" data-scenario="upcoming" aria-pressed="false">Upcoming</button>
+      <button class="scenario-button" data-scenario="paused" aria-pressed="false">Paused</button>
+      <button class="scenario-button" data-scenario="disabled" aria-pressed="false">Disabled, pause retained</button>
+      <button class="scenario-button" data-scenario="overnight" aria-pressed="false">Overnight</button>
+      <button class="scenario-button" data-scenario="long" aria-pressed="false">Long content</button>
+      <button class="scenario-button" data-scenario="error" aria-pressed="false">Save failure</button>
+    </div>
+    <div class="review-note"><span class="note-mark" aria-hidden="true">i</span><p>Enabled and Resume now demonstrate state changes. Pause opens a destination placeholder; its confirmation sheet is a separate design.</p></div>
+    <a class="spec-link" href="README.md">Read screen notes ↗</a>
+  </aside>
+  <section class="device-stage" aria-label="Rule detail preview">
+    <div class="device"><div class="device-screen">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="dynamic-island"></span><span class="status-icons">●●● <span class="battery"></span></span></div>
+      <nav class="detail-nav" aria-label="Rule navigation"><a href="../rules/index.html">‹ Rules</a><span>Rule details</span><button id="edit" type="button">Edit</button></nav>
+      <section class="app-scroll" id="app-scroll" aria-labelledby="rule-title">
+        <h2 id="rule-title" class="detail-title">Work Hours</h2>
+        <aside class="simulation-banner"><span class="banner-icon" aria-hidden="true">◉</span><p><strong>Simulation</strong><br>No apps or websites are actually blocked.</p></aside>
+        <div id="detail-content"></div>
+      </section>
+      <nav class="tab-bar" aria-label="Main navigation"><a class="tab" href="../today/index.html"><span aria-hidden="true">◷</span>Today</a><a class="tab is-current" href="../rules/index.html" aria-current="page"><span aria-hidden="true">☷</span>Rules</a><button class="tab" id="settings"><span aria-hidden="true">⚙</span>Settings</button></nav>
+      <div class="home-indicator" aria-hidden="true"></div>
+      <div class="prototype-toast" id="prototype-toast" role="status"></div>
+    </div></div>
+    <p class="stage-caption">Light appearance reference · device frame is review-only</p>
+  </section>
+</main>
+<dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">Delete this rule?</h2><p>This removes the local rule and its simulated restrictions. Other rules may still restrict its targets.</p><div class="dialog-actions"><button id="cancel-delete" autofocus>Keep rule</button><button id="confirm-delete" class="destructive">Delete rule</button></div></dialog>
+</body>
+</html>
