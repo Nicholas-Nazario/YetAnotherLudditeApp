@@ -34,7 +34,7 @@
 
         <div class="review-divider"></div>
         <h2>Review a state</h2>
-        <p class="review-help">These controls are part of the mockup viewer, not the iOS app.</p>
+        <p class="review-help">Developer review aids: these controls show illustrative fixtures at fixed times and are outside the iOS app. Today uses current device time.</p>
         <div class="scenario-list" role="group" aria-label="Today screen scenarios">
           <button class="scenario-button is-selected" type="button" data-scenario="overlap" aria-pressed="true"><span class="scenario-dot dot-overlap"></span><span>Active overlap</span></button>
           <button class="scenario-button" type="button" data-scenario="quiet" aria-pressed="false"><span class="scenario-dot dot-quiet"></span><span>Nothing active</span></button>
@@ -79,21 +79,8 @@
                 <div><p class="next-label" id="next-label">NEXT EXPECTED CHANGE</p><h3 id="next-title"></h3><p id="next-description"></p></div>
               </section>
 
-              <details class="preview-control" id="preview-control">
-                <summary>
-                  <span class="preview-icon"><svg class="icon"><use href="#icon-clock" /></svg></span>
-                  <span class="preview-copy"><strong>Preview time</strong><small id="preview-time-label"></small></span>
-                  <span class="preview-change">Change</span>
-                </summary>
-                <div class="preview-expanded">
-                  <label for="preview-datetime">See how your rules look at another time</label>
-                  <input id="preview-datetime" type="datetime-local" value="2026-10-12T12:20" />
-                  <button id="reset-preview" type="button">Reset to demo time</button>
-                </div>
-              </details>
-
               <section class="targets-section" aria-labelledby="targets-title">
-                <div class="section-heading"><h3 id="targets-title">Restricted in preview</h3><span class="section-count" id="target-count">0</span></div>
+                <div class="section-heading"><h3 id="targets-title">Restricted now</h3><span class="section-count" id="target-count">0</span></div>
                 <div id="target-list" class="target-list"></div>
               </section>
             </div>

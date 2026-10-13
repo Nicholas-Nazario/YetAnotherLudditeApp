@@ -6,6 +6,8 @@
  * status. See README.md for the exact component and state mapping.
  */
 
+// Fixed dates belong only to the external developer review fixtures.
+// Native Today evaluates current device time, with explicit date/calendar inputs.
 const DEMO_TIME = "2026-10-12T12:20";
 
 const reviewScenarios = {
@@ -29,8 +31,6 @@ const elements = {
   summaryStatus: document.querySelector("#summary-status"),
   summaryTitle: document.querySelector("#summary-title"),
   summaryDescription: document.querySelector("#summary-description"),
-  previewLabel: document.querySelector("#preview-time-label"),
-  previewInput: document.querySelector("#preview-datetime"),
   targetHeading: document.querySelector("#targets-title"),
   targetCount: document.querySelector("#target-count"),
   targetList: document.querySelector("#target-list"),
@@ -42,8 +42,8 @@ const elements = {
   toast: document.querySelector("#prototype-toast"),
 };
 
-let selectedTime = DEMO_TIME;
-let selectedMode = "normal";
+let fixtureTime = DEMO_TIME;
+let fixtureMode = "normal";
 let toastTimer;
 
 function formatDate(date, options) {
@@ -80,7 +80,7 @@ function todayViewState(date, mode) {
   if (mode === "no-rules") {
     return {
       tone: "inactive", title: "A fresh start", description: "Create a rule to see your boundaries here.",
-      heading: "Restricted in preview", targets: [], empty: "no-rules",
+      heading: "Restricted now", targets: [], empty: "no-rules",
       nextLabel: "SCHEDULE", nextTitle: "No changes scheduled", nextDescription: "Your next change will appear after you create a rule.",
     };
   }
@@ -99,7 +99,7 @@ function todayViewState(date, mode) {
   if (mode === "paused" && workHours && lunch) {
     return {
       tone: "paused", title: "1 target stays restricted", description: "Work Hours is paused until 12:35 PM. Lunch still applies.",
-      heading: "Restricted in preview", targets: [appTarget("Sample App A", ["Lunch"])],
+      heading: "Restricted now", targets: [appTarget("Sample App A", ["Lunch"])],
       nextTitle: "12:35 PM · Work Hours resumes", nextDescription: "Sample App A stays restricted; youtube.com would become restricted again.",
     };
   }
@@ -107,8 +107,8 @@ function todayViewState(date, mode) {
   if (evening) {
     const next = hour >= 22 ? atTime(date, 7, 0, 1) : atTime(date, 7);
     return {
-      tone: "active", title: "2 targets would be restricted", description: "Evening Wind Down is active in this preview.",
-      heading: "Restricted in preview", targets: [
+      tone: "active", title: "2 targets would be restricted", description: "Evening Wind Down is active now.",
+      heading: "Restricted now", targets: [
         appTarget("Sample App B", ["Evening Wind Down"]),
         siteTarget("instagram.com", "Exact host", ["Evening Wind Down"]),
       ],
@@ -119,8 +119,8 @@ function todayViewState(date, mode) {
   if (workHours) {
     const next = lunch ? atTime(date, 13) : atTime(date, hour < 12 ? 12 : 17);
     return {
-      tone: "active", title: "2 targets would be restricted", description: lunch ? "Two active rules shape your afternoon." : "Work Hours is active in this preview.",
-      heading: "Restricted in preview", targets: [
+      tone: "active", title: "2 targets would be restricted", description: lunch ? "Two active rules shape your afternoon." : "Work Hours is active now.",
+      heading: "Restricted now", targets: [
         appTarget("Sample App A", lunch ? ["Work Hours", "Lunch"] : ["Work Hours"]),
         siteTarget("youtube.com", "This domain + subdomains", ["Work Hours"]),
       ],
@@ -132,7 +132,7 @@ function todayViewState(date, mode) {
   const next = weekday && hour < 9 ? atTime(date, 9) : atTime(date, 22);
   return {
     tone: "inactive", title: "Nothing restricted now", description: "Your boundaries are ready for the next scheduled window.",
-    heading: "Restricted in preview", targets: [], empty: "quiet",
+    heading: "Restricted now", targets: [], empty: "quiet",
     nextTitle: weekday && hour < 9 ? `${formatNext(next)} · Work Hours begins` : `${formatNext(next)} · Wind Down begins`,
     nextDescription: weekday && hour < 9 ? "Sample App A and youtube.com would become restricted." : "Sample App B and instagram.com would become restricted.",
   };
@@ -162,17 +162,15 @@ function createEmptyState(kind) {
   const state = document.createElement("div");
   state.className = "empty-state";
   state.innerHTML = kind === "no-rules"
-    ? `<span class="empty-symbol">${icons.plus}</span><h4>No rules yet</h4><p>Choose an app or website and a schedule to create your first boundary.</p><button class="text-link" type="button" data-target-action="Create rule">Create rule →</button>`
-    : `<span class="empty-symbol">${icons.clock}</span><h4>Nothing active at this time</h4><p>Your next scheduled change is shown below.</p>`;
+    ? `<span class="empty-symbol">${icons.plus}</span><h4>No rules yet</h4><p>Choose a sample app or website and a schedule to create your first boundary.</p><button class="text-link" type="button" data-target-action="Create rule">Create rule →</button>`
+    : `<span class="empty-symbol">${icons.clock}</span><h4>Nothing active at this time</h4><p>Your next scheduled change is shown above.</p>`;
   return state;
 }
 
 function render() {
-  const date = new Date(selectedTime);
-  const state = todayViewState(date, selectedMode);
+  const date = new Date(fixtureTime);
+  const state = todayViewState(date, fixtureMode);
   elements.date.textContent = formatDate(date, { weekday: "long", month: "long", day: "numeric" }).toUpperCase();
-  elements.previewLabel.textContent = formatDate(date, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
-  elements.previewInput.value = selectedTime;
   elements.summary.dataset.tone = state.tone;
   elements.summaryStatus.textContent = state.empty === "no-rules" ? "No rules" : { active: "Active", paused: "Paused", inactive: "Inactive", error: "Alert" }[state.tone];
   elements.summaryTitle.textContent = state.title;
@@ -198,8 +196,8 @@ function showToast(message) {
 document.querySelectorAll("[data-scenario]").forEach((button) => {
   button.addEventListener("click", () => {
     const scenario = reviewScenarios[button.dataset.scenario];
-    selectedTime = scenario.time;
-    selectedMode = scenario.mode;
+    fixtureTime = scenario.time;
+    fixtureMode = scenario.mode;
     document.querySelectorAll("[data-scenario]").forEach((candidate) => {
       const selected = candidate === button;
       candidate.classList.toggle("is-selected", selected);
@@ -208,22 +206,6 @@ document.querySelectorAll("[data-scenario]").forEach((button) => {
     render();
     document.querySelector(".app-scroll").scrollTop = 0;
   });
-});
-
-elements.previewInput.addEventListener("change", (event) => {
-  if (!event.target.value) return;
-  selectedTime = event.target.value;
-  selectedMode = "normal";
-  document.querySelectorAll("[data-scenario]").forEach((button) => {
-    button.classList.remove("is-selected");
-    button.setAttribute("aria-pressed", "false");
-  });
-  render();
-});
-
-document.querySelector("#reset-preview").addEventListener("click", () => {
-  document.querySelector('[data-scenario="overlap"]').click();
-  document.querySelector("#preview-control").open = false;
 });
 
 document.querySelector("#add-rule-button").addEventListener("click", () => showToast("Rule editor will be a separate mockup."));
