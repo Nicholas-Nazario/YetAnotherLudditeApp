@@ -66,12 +66,18 @@ final class AppModel: ObservableObject {
 
     @discardableResult
     func pause(_ rule: Rule, minutes: Int) -> Bool {
-        guard (15...1_440).contains(minutes) else {
+        guard PauseReview.isValidDuration(minutes) else {
             errorMessage = "Choose a pause from 15 minutes through 24 hours."
             return false
         }
-        var updated = rule
-        updated.pauseUntil = clock().addingTimeInterval(TimeInterval(minutes * 60))
+        refreshClock()
+        let saved = rules.first { $0.id == rule.id }
+        if let reason = PauseReview.unavailableReason(for: saved, at: currentDate) {
+            errorMessage = reason
+            return false
+        }
+        guard var updated = saved else { return false }
+        updated.pauseUntil = currentDate.addingTimeInterval(TimeInterval(minutes * 60))
         return save(updated)
     }
 
