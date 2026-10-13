@@ -7,6 +7,7 @@ These browser mockups are the visual and interaction plan for the iOS app. They 
 | Screen | Open the mockup | Read the screen specification |
 | --- | --- | --- |
 | Today | [Interactive prototype](today/index.html) | [Component and state notes](today/README.md) |
+| Rules | [Interactive prototype](rules/index.html) | [Component and state notes](rules/README.md) · [Handoff](handoffs/rules-list.md) |
 
 ## Approach for this proof of concept
 

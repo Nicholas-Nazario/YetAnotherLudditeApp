@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#eef2ff" />
+    <title>Rules · Yet Another Luddite App UI plan</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.5 12s3.4-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.4 5.5-9.5 5.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+      <symbol id="icon-rules" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+      <symbol id="icon-today" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1 1.7-1.7 3-2-.7a7.8 7.8 0 0 1-1.8 1l-.4 2h-3.4l-.4-2a7.8 7.8 0 0 1-1.8-1l-2 .7-1.7-3 1-1.7a7.8 7.8 0 0 1 0-2l-1-1.7 1.7-3 2 .7a7.8 7.8 0 0 1 1.8-1l.4-2h3.4l.4 2a7.8 7.8 0 0 1 1.8 1l2-.7 1.7 3-1 1.7a7.8 7.8 0 0 1 0 2Z" transform="translate(0 -1) scale(1 .95)"/></symbol>
+      <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" /></symbol>
+    </svg>
+
+    <main class="review-layout">
+      <aside class="review-panel" aria-labelledby="review-title">
+        <p class="eyebrow">UI / UX plan · Screen 02</p>
+        <h1 id="review-title">Rules</h1>
+        <p class="review-intro">A clear, steady place to find a rule, see when it applies, and open it to make a change.</p>
+
+        <div class="review-divider"></div>
+        <h2>Review a state</h2>
+        <p class="review-help">These controls are for design review. Rule rows are examples, not live app data.</p>
+        <div class="scenario-list" role="group" aria-label="Rules screen scenarios">
+          <button class="scenario-button is-selected" type="button" data-scenario="mixed" aria-pressed="true"><span class="scenario-dot dot-active"></span><span>All rule states</span></button>
+          <button class="scenario-button" type="button" data-scenario="no-rules" aria-pressed="false"><span class="scenario-dot dot-empty"></span><span>No rules</span></button>
+          <button class="scenario-button" type="button" data-scenario="paused-disabled" aria-pressed="false"><span class="scenario-dot dot-paused"></span><span>Paused and disabled</span></button>
+        </div>
+
+        <div class="review-note">
+          <span class="note-mark" aria-hidden="true">i</span>
+          <p>Active rows show time remaining in the current window. Status follows the current device time, independent of Today’s preview.</p>
+        </div>
+        <a class="spec-link" href="README.md">Read screen notes <span aria-hidden="true">↗</span></a>
+      </aside>
+
+      <section class="device-stage" aria-label="Rules screen preview">
+        <div class="device">
+          <div class="device-screen">
+            <div class="status-bar" aria-hidden="true">
+              <span>9:41</span><span class="dynamic-island"></span>
+              <span class="status-icons">●●● <span class="battery"></span></span>
+            </div>
+
+            <section class="app-scroll" id="app-scroll" aria-labelledby="rules-title">
+              <header class="app-header">
+                <div>
+                  <p class="app-overline">YOUR BOUNDARIES</p>
+                  <h2 id="rules-title">Rules</h2>
+                </div>
+                <button class="icon-button add-button" id="add-rule" type="button" aria-label="Create rule" title="Create rule">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-plus" /></svg>
+                </button>
+              </header>
+
+              <aside class="simulation-banner" aria-label="Simulation. No apps or websites are actually blocked.">
+                <span class="banner-icon" aria-hidden="true"><svg class="icon"><use href="#icon-eye" /></svg></span>
+                <p><strong>Simulation</strong><br />No apps or websites are actually blocked.</p>
+              </aside>
+
+              <div id="rules-content" aria-live="polite"></div>
+            </section>
+
+            <nav class="tab-bar" aria-label="Main navigation">
+              <a class="tab" href="#today" data-tab="Today" aria-label="Today">
+                <svg class="icon" aria-hidden="true"><use href="#icon-today" /></svg><span>Today</span>
+              </a>
+              <a class="tab is-current" href="#rules" aria-current="page" aria-label="Rules, current tab">
+                <svg class="icon" aria-hidden="true"><use href="#icon-rules" /></svg><span>Rules</span>
+              </a>
+              <a class="tab" href="#settings" data-tab="Settings" aria-label="Settings">
+                <svg class="icon" aria-hidden="true"><use href="#icon-settings" /></svg><span>Settings</span>
+              </a>
+            </nav>
+            <div class="home-indicator" aria-hidden="true"></div>
+            <div class="prototype-toast" id="prototype-toast" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="stage-caption">Device frame and status bar are review aids only</p>
+      </section>
+    </main>
+  </body>
+</html>
