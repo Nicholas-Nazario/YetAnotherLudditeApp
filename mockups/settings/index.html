@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings and privacy · UX reference</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="list" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m9 3 1-1h4l1 3 3 1 3 3-1 3 1 3-3 3-3 1-1 3h-4l-1-3-3-1-3-3 1-3-1-3 3-3 3-1Z"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2.5 12s3.4-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.4 5.5-9.5 5.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+</svg>
+<main class="review-layout">
+  <aside class="review-panel">
+    <p class="eyebrow">UI / UX PLAN · PHASE 0</p>
+    <h1>Settings<br>and privacy</h1>
+    <p class="review-intro">Know what stays on your device, understand this build’s limits, and remove your local rules.</p>
+    <div class="review-divider"></div>
+    <h2>Review a state</h2>
+    <p class="review-help">Local design fixtures only. Deletion changes the preview, not any files or app data.</p>
+    <div class="scenario-list" role="group" aria-label="Settings scenarios">
+      <button class="scenario-button" data-scenario="default">Saved rules</button>
+      <button class="scenario-button" data-scenario="empty">No saved rules</button>
+      <button class="scenario-button" data-scenario="unreadable">Local file unreadable</button>
+      <button class="scenario-button" data-scenario="delete-error">Deletion failure</button>
+      <button class="scenario-button" data-scenario="deleting">Deletion in progress</button>
+    </div>
+    <label class="text-control"><input type="checkbox" id="large-text"> Enlarged browser text</label>
+    <div class="review-note"><span class="note-mark" aria-hidden="true">i</span><p>No authorization switches or Safari status are shown in this simulation build. External About links open only when selected.</p></div>
+    <a class="spec-link" href="README.md">Read screen notes ↗</a>
+  </aside>
+  <section class="device-stage" aria-label="Settings screen preview">
+    <div class="device"><div class="device-screen">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="dynamic-island"></span><span class="status-icons">●●● <span class="battery"></span></span></div>
+      <div class="app-scroll" id="app-scroll">
+        <header class="app-header"><h2>Settings</h2></header>
+        <aside class="simulation-banner"><span class="banner-icon" aria-hidden="true"><svg class="icon"><use href="#eye"/></svg></span><p><strong>Simulation</strong><br>No apps or websites are actually blocked.</p></aside>
+        <p class="build-note">This build previews your rules locally. Device blocking and permission setup arrive in later phases.</p>
+        <section class="settings-section" aria-labelledby="privacy-title">
+          <h3 id="privacy-title">Privacy</h3>
+          <div class="settings-group">
+            <div class="copy-row"><h4>On this device</h4><p>Your rules stay on this device. They aren’t sent to us or a third party.</p></div>
+            <div class="copy-row"><h4>No account. No tracking.</h4><p>No analytics, browsing history, app usage history, or behavioral profiles.</p></div>
+          </div>
+          <p class="section-note">Rules are excluded from app backups. After a restore or reinstall, you’ll need to recreate them.</p>
+        </section>
+        <section class="settings-section" aria-labelledby="data-title">
+          <h3 id="data-title">Local data</h3>
+          <div class="settings-group">
+            <dl class="count-row"><dt>Saved rules</dt><dd id="rule-count">4</dd></dl>
+            <div class="storage-error" id="storage-error" hidden><strong>Local rules couldn’t be read</strong><p>The existing file has been kept. The saved-rule count is unavailable. You can delete the local rule data to start again.</p></div>
+            <button class="delete-row" id="delete-rules">Delete all local rules…</button>
+          </div>
+          <p class="section-note" id="data-note">Deletes all rules, including their schedules, targets, and pauses. This can’t be undone.</p>
+          <div class="status-message" id="operation-status" role="status" hidden></div>
+          <div class="delete-error" id="delete-error" role="alert" hidden><strong>Couldn’t delete local rules</strong><p>The deletion did not complete. Try again using Delete all local rules.</p></div>
+        </section>
+        <section class="settings-section" aria-labelledby="about-title">
+          <h3 id="about-title">About</h3>
+          <div class="settings-group">
+            <div class="copy-row app-identity"><h4>Yet Another Luddite App</h4><p>Version 1.0 (1)</p></div>
+            <a class="link-row" href="https://github.com/Nicholas-Nazario/YetAnotherLudditeApp/blob/main/README.md#manifesto" target="_blank" rel="noopener noreferrer"><span>Read the manifesto</span><span aria-hidden="true">↗</span><span class="sr-only"> (opens in browser)</span></a>
+            <a class="link-row" href="https://github.com/Nicholas-Nazario/YetAnotherLudditeApp" target="_blank" rel="noopener noreferrer"><span>Source code on GitHub</span><span aria-hidden="true">↗</span><span class="sr-only"> (opens in browser)</span></a>
+          </div>
+          <p class="section-note">Open source under the MIT License.</p>
+        </section>
+      </div>
+      <nav class="tab-bar" aria-label="Main navigation">
+        <a class="tab" href="../today/index.html"><svg class="icon" aria-hidden="true"><use href="#clock"/></svg><span>Today</span></a>
+        <a class="tab" href="../rules/index.html"><svg class="icon" aria-hidden="true"><use href="#list"/></svg><span>Rules</span></a>
+        <a class="tab is-current" href="index.html" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#gear"/></svg><span>Settings</span></a>
+      </nav>
+      <div class="home-indicator" aria-hidden="true"></div>
+    </div></div>
+    <p class="stage-caption">iPhone layout reference · light appearance · example version</p>
+  </section>
+</main>
+<dialog id="delete-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-copy">
+  <h2 id="dialog-title">Delete all local rules?</h2>
+  <p id="dialog-copy"></p>
+  <p class="dialog-note">Simulation — no apps or websites are actually blocked.</p>
+  <div class="dialog-actions"><button class="cancel-button" id="cancel-delete" autofocus>Cancel</button><button class="confirm-delete" id="confirm-delete">Delete all rules</button></div>
+</dialog>
+</body>
+</html>
