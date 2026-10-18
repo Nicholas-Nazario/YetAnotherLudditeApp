@@ -6,11 +6,14 @@ final class AppModel: ObservableObject {
     @Published private(set) var rules: [Rule] = []
     @Published private(set) var snapshot: RuleSnapshot?
     @Published private(set) var storageReady = true
+    @Published private(set) var isLoadingRules = false
+    @Published private(set) var localDataError: String?
     @Published var errorMessage: String?
 
     private let repository: RuleRepository
     private let restrictionService: RestrictionService
-    private var evaluator: RuleEvaluator { RuleEvaluator(calendar: .current) }
+    let calendar: Calendar
+    private var evaluator: RuleEvaluator { RuleEvaluator(calendar: calendar) }
     private let clock: () -> Date
     private var wallClockDate: Date
 
@@ -19,8 +22,10 @@ final class AppModel: ObservableObject {
     init(
         repository: RuleRepository = JSONRuleRepository.appContainer(),
         restrictionService: RestrictionService = SimulatedRestrictionService(),
-        clock: @escaping () -> Date = Date.init
+        clock: @escaping () -> Date = Date.init,
+        calendar: Calendar = .autoupdatingCurrent
     ) {
+        self.calendar = calendar
         self.clock = clock
         self.wallClockDate = clock()
         self.repository = repository
@@ -29,6 +34,7 @@ final class AppModel: ObservableObject {
             rules = try repository.load()
         } catch {
             storageReady = false
+            localDataError = "Local rule data could not be read. This target’s current state cannot be determined."
             errorMessage = "Could not read local rules: \(error.localizedDescription)"
         }
         refreshSnapshot()
@@ -37,6 +43,28 @@ final class AppModel: ObservableObject {
     func refreshClock() {
         wallClockDate = clock()
         refreshSnapshot()
+    }
+
+    /// Retry/foreground reads withhold old results until local data is available.
+    func reloadLocalRules() async {
+        guard !isLoadingRules else { return }
+        isLoadingRules = true
+        defer { isLoadingRules = false }
+        await Task.yield()
+        guard !Task.isCancelled else { return }
+        do {
+            rules = try repository.load()
+            storageReady = true
+            localDataError = nil
+        } catch {
+            storageReady = false
+            localDataError = "Local rule data could not be read. This target’s current state cannot be determined."
+        }
+        refreshClock()
+    }
+
+    func explanation(for target: ExplanationTarget) -> RestrictionExplanation {
+        RestrictionExplanation(target: target, rules: rules, date: currentDate, calendar: calendar)
     }
 
     func save(_ rule: Rule) -> Bool {
@@ -92,6 +120,7 @@ final class AppModel: ObservableObject {
             try repository.deleteAll()
             rules = []
             storageReady = true
+            localDataError = nil
             refreshClock()
         } catch {
             errorMessage = "Could not remove local rules: \(error.localizedDescription)"
@@ -131,6 +160,7 @@ final class AppModel: ObservableObject {
     }
 
     private func refreshSnapshot() {
+        guard storageReady else { snapshot = nil; return }
         let newSnapshot = evaluator.snapshot(for: rules, at: currentDate)
         snapshot = newSnapshot
         restrictionService.apply(newSnapshot)
