@@ -11,6 +11,8 @@ These browser mockups are the visual and interaction plan for the iOS app. They 
 | Rules | [Interactive prototype](rules/index.html) | [Component and state notes](rules/README.md) · [Handoff](handoffs/rules-list.md) |
 | Rule editor | [Interactive prototype](rule-editor/index.html) | [Component and state notes](rule-editor/README.md) · [Handoff](handoffs/rule-editor.md) |
 | Pause review | [Interactive prototype](pause-review/index.html) | [Component and state notes](pause-review/README.md) · [Handoff](handoffs/pause-review.md) |
+| Why blocked | [Interactive prototype](why-blocked/index.html) | [Component and state notes](why-blocked/README.md) · [Handoff](handoffs/why-blocked.md) |
+| Settings and privacy | [Interactive prototype](settings/index.html) | [Component and state notes](settings/README.md) · [Handoff](handoffs/settings-and-privacy.md) |
 
 ## Approach for this proof of concept
 

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why blocked · UX reference</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<main class="review-layout">
+  <aside class="review-panel">
+    <p class="eyebrow">UI / UX PLAN · TARGET EXPLANATIONS</p>
+    <h1>Why blocked</h1>
+    <p class="review-intro">See every rule responsible for one target. Review a pause without losing sight of overlaps.</p>
+    <div class="review-divider"></div>
+    <h2>Review a state</h2>
+    <p class="review-help">Illustrative results at Monday, October 12, 12:20 PM. Actions do not save changes.</p>
+    <div class="scenario-list" role="group" aria-label="Explanation scenarios">
+      <button class="scenario-button" data-scenario="overlap">App · overlapping rules</button>
+      <button class="scenario-button" data-scenario="single">App · one rule</button>
+      <button class="scenario-button" data-scenario="website">Website · matching scopes</button>
+      <button class="scenario-button" data-scenario="none">No active matches</button>
+      <button class="scenario-button" data-scenario="many">Many rules / long names</button>
+      <button class="scenario-button" data-scenario="error">Local data unavailable</button>
+    </div>
+    <div class="review-tools">
+      <button id="advance">Simulate Lunch ending</button>
+      <label><input id="large-text" type="checkbox"> Enlarged browser text</label>
+    </div>
+    <div class="review-note"><span class="note-mark" aria-hidden="true">i</span><p>Website checks are local matching examples. The prototype never opens or requests the entered address.</p></div>
+    <a class="spec-link" href="README.md">Read screen notes ↗</a>
+  </aside>
+  <section class="device-stage" aria-label="Why blocked screen preview">
+    <div class="device"><div class="device-screen">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="dynamic-island"></span><span class="status-icons">●●● <span class="battery"></span></span></div>
+      <header class="screen-nav"><a href="../today/index.html" aria-label="Back to Today">‹ Today</a><h2>Why blocked</h2><span></span></header>
+      <div class="app-scroll" id="app-scroll">
+        <div class="target-heading"><span class="target-badge" id="target-badge" aria-hidden="true">A</span><div><p id="target-kind" class="target-kind">Sample app</p><h3 id="target-name">Sample App A</h3></div></div>
+        <aside class="simulation-banner"><span class="banner-icon" aria-hidden="true">◉</span><p><strong>Simulation</strong><br>No apps or websites are actually blocked.</p></aside>
+        <p class="helper" id="target-note">Example identity, not an app installed on your phone.</p>
+        <section id="website-inspector" hidden>
+          <details id="address-details">
+            <summary>Check another address</summary>
+            <form id="address-form" novalidate>
+              <label for="address">Website address</label>
+              <input id="address" type="text" inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="address-help address-error">
+              <p class="helper" id="address-help">Enter a domain or URL. Only the host is checked locally.</p>
+              <p id="address-error" class="field-error" role="alert" hidden></p>
+              <button class="check-button" type="submit">Check host</button>
+            </form>
+          </details>
+        </section>
+        <section class="result-card" id="result-card" aria-live="polite" aria-atomic="true"><p class="result-label" id="result-label"></p><h3 id="result-title"></h3><p id="result-copy"></p></section>
+        <section id="rules-section" aria-labelledby="rules-heading"><h3 id="rules-heading" class="section-title">Responsible rules</h3><div id="rule-list"></div></section>
+        <section id="data-error" class="error-card" role="alert" hidden><h3>Rule information unavailable</h3><p>Local rule data could not be read. This target’s current state cannot be determined.</p><button id="retry">Try again</button></section>
+        <p id="timing-note" class="helper">These rules apply now. Other rules may start or end later.</p>
+      </div>
+      <div class="home-indicator" aria-hidden="true"></div>
+      <div class="prototype-toast" id="prototype-toast" role="status"></div>
+      <dialog id="pause-dialog" aria-labelledby="pause-title">
+        <form method="dialog"><button class="dialog-cancel">Cancel</button></form>
+        <h3 id="pause-title">Pause rule</h3>
+        <p class="helper">Simulation — no apps or websites are actually blocked.</p>
+        <label for="pause-duration">Duration</label>
+        <select id="pause-duration"><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="60">1 hour</option></select>
+        <p id="pause-timing"></p><p id="pause-effect"></p>
+        <p class="helper">Only this rule will pause. Other rules may start or end later.</p>
+        <button id="confirm-pause">Confirm pause</button>
+        <a href="../pause-review/index.html" target="_blank" rel="noopener">Open full Pause review reference ↗</a>
+      </dialog>
+    </div></div>
+    <p class="stage-caption">iPhone layout reference · light appearance</p>
+  </section>
+</main>
+</body>
+</html>

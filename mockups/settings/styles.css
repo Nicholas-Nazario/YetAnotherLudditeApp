@@ -1,0 +1,51 @@
+/* Existing semantic tokens and standalone review shell; no global changes. */
+@import url("../rules/styles.css");
+:root { --error:#a1465b; --error-wash:#fcecf0; }
+.review-panel h1 { font-size:clamp(40px, 4.5vw, 56px); }
+.app-scroll { min-height:0; padding-top:12px; }
+.app-header { margin-bottom:18px; }
+.simulation-banner { margin-bottom:10px; }
+.build-note { margin:0 2px 24px; color:var(--muted); font-size:13px; line-height:1.5; }
+.settings-section { margin-bottom:24px; }
+.settings-section > h3 { font-size:15px; font-weight:650; margin:0 3px 10px; }
+.settings-group { border:1px solid var(--line); background:white; border-radius:15px; overflow:hidden; }
+.settings-group > * + * { border-top:1px solid var(--line); }
+.copy-row { padding:15px; }
+.copy-row h4 { font-size:15px; line-height:1.4; font-weight:650; margin:0 0 5px; overflow-wrap:anywhere; }
+.copy-row p { margin:0; font-size:13px; line-height:1.5; color:var(--muted); overflow-wrap:anywhere; }
+.section-note { color:var(--muted); font-size:12px; line-height:1.5; margin:9px 3px 0; }
+.count-row { margin:0; padding:15px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 16px; font-size:15px; line-height:1.4; }
+.count-row dd { margin:0; color:var(--muted); font-variant-numeric:tabular-nums; }
+.delete-row { display:block; width:100%; min-height:48px; padding:14px 15px; border:0; background:white; color:var(--error); font-size:14px; text-align:left; line-height:1.4; }
+.settings-group .delete-row { border-top:1px solid var(--line); }
+.delete-row:hover:enabled { background:var(--error-wash); }
+.delete-row:disabled { color:var(--muted); background:#fafbfe; cursor:default; }
+.storage-error { padding:13px 15px; background:var(--error-wash); color:var(--error); font-size:13px; line-height:1.5; }
+.storage-error p { margin:5px 0 0; }
+.delete-error { border:1px solid #efc8d2; border-radius:13px; padding:13px; margin-top:12px; color:var(--error); background:var(--error-wash); font-size:13px; line-height:1.5; }
+.delete-error p { margin:5px 0 0; }
+.status-message { color:var(--inactive); background:var(--inactive-wash); border-radius:12px; padding:12px; font-size:13px; line-height:1.5; margin-top:12px; }
+.link-row { min-height:48px; padding:13px 15px; display:flex; justify-content:space-between; align-items:center; gap:14px; color:var(--blue-deep); font-size:14px; line-height:1.5; text-decoration:none; }
+.link-row:hover { background:var(--canvas); }
+.link-row span:first-child { overflow-wrap:anywhere; }
+.text-control { display:flex; align-items:center; gap:8px; min-height:44px; font-size:13px; color:var(--muted); margin-top:14px; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+[hidden] { display:none !important; }
+dialog { width:min(350px, calc(100vw - 32px)); max-height:calc(100dvh - 40px); overflow:auto; border:1px solid var(--line); border-radius:18px; padding:21px; color:var(--ink); background:var(--canvas); box-shadow:var(--shadow); }
+dialog::backdrop { background:rgb(23 35 68 / 40%); }
+dialog h2 { font-size:21px; line-height:1.25; letter-spacing:-.025em; margin:0 0 12px; }
+dialog p { font-size:14px; line-height:1.5; margin:0 0 15px; }
+dialog .dialog-note { font-size:12px; color:var(--muted); }
+.dialog-actions { display:grid; gap:8px; }
+.dialog-actions button { min-height:48px; border-radius:11px; padding:12px; font-size:15px; font-weight:600; line-height:1.4; }
+.cancel-button { border:1px solid var(--line); background:white; color:var(--blue-deep); }
+.confirm-delete { border:0; background:var(--error-wash); color:var(--error); }
+.large-text .build-note, .large-text .section-note, .large-text .copy-row p,
+.large-text .simulation-banner p, .large-text .simulation-banner strong,
+.large-text .storage-error, .large-text .delete-error, .large-text .status-message { font-size:18px; }
+.large-text .settings-section > h3, .large-text .copy-row h4 { font-size:22px; }
+.large-text .count-row, .large-text .delete-row, .large-text .link-row { font-size:21px; }
+.large-dialog h2 { font-size:27px; }
+.large-dialog p, .large-dialog .dialog-actions button { font-size:20px; }
+.large-dialog .dialog-note { font-size:18px; }
+@media(max-width:350px) { .app-scroll { padding-inline:16px; } }
